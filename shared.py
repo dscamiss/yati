@@ -1,9 +1,9 @@
 """Implementation of blocks which are shared between the encoder/decoder sides."""
 
 import math
+
 import torch
 import torch.nn as nn
-
 from einops import einsum, rearrange
 from torch import Tensor
 

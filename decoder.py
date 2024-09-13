@@ -1,14 +1,10 @@
 """Implementation of blocks which are on the decoder side only."""
 
 import torch.nn as nn
+from torch import Tensor
 
 from params import EncoderDecoderParams
-from shared import (
-    AddAndNorm,
-    FeedForward,
-    MultiHeadAttention,
-)
-from torch import Tensor
+from shared import AddAndNorm, FeedForward, MultiHeadAttention
 
 
 class DecoderBlock(nn.Module):

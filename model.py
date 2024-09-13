@@ -2,12 +2,12 @@
 
 import torch
 import torch.nn as nn
+from torch import Tensor
 
 from decoder import DecoderStack
 from encoder import EncoderStack
 from params import EncoderDecoderParams, TransformerParams
 from shared import Embedding, PositionalEncoding
-from torch import Tensor
 
 
 class Transformer(nn.Module):
