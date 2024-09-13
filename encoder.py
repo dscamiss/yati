@@ -34,6 +34,7 @@ class EncoderBlock(nn.Module):
         Following AIAYN, no masking is applied in the multi-head attention block used
         in sub-layer 1.
     """
+
     def __init__(self, p: EncoderDecoderBlockParams) -> None:
         super().__init__()
         self.multi_head_attention = MultiHeadAttention(p.h, p.d_model, p.d_k, p.d_v)
@@ -69,9 +70,12 @@ class EncoderStack(nn.Module):
         p: Instance of `EncoderDecoderBlockParams`.
         num_encoder_blocks: Number of encoder blocks in the stack.
     """
+
     def __init__(self, p: EncoderDecoderBlockParams, num_encoder_blocks: int) -> None:
         super().__init__()
-        self.encoder_blocks = nn.ModuleList([EncoderBlock(p) for _ in range(num_encoder_blocks)])
+        self.encoder_blocks = nn.ModuleList(
+            [EncoderBlock(p) for _ in range(num_encoder_blocks)]
+        )
 
     def forward(self, x: Tensor) -> Tensor:
         """Compute encoder stack output.

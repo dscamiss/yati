@@ -109,7 +109,10 @@ class EncoderDecoderBlockParams:
         d_ff: Hidden layer dimension in feed-forward block.
         dropout_prob: Dropout probability.
     """
-    def __init__(self, h: int, d_model: int, d_k: int, d_v: int, d_ff: int, dropout_prob: float):
+
+    def __init__(
+        self, h: int, d_model: int, d_k: int, d_v: int, d_ff: int, dropout_prob: float
+    ):
         self.h = h
         self.d_model = d_model
         self.d_k = d_k
@@ -130,6 +133,7 @@ class Embedding(nn.Module):
         scaling_factor (:obj:`float`): Scaling factor.
 
     """
+
     def __init__(self, d_model: int, num_embeddings: int) -> None:
         super().__init__()
         self.embedding = nn.Embedding(num_embeddings, d_model)

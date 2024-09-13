@@ -21,6 +21,7 @@ class PositionalEncoding(nn.Module):
         log(1 / 10000^{2i / d_model}) = -(log(10000) / d_model) 2i
 
     """
+
     def __init__(self, d_model: int, max_seq_len: int) -> None:
         super().__init__()
 
@@ -60,6 +61,7 @@ class TransformerParams:
         num_encoder_blocks: Number of encoder blocks in the encoder stack.
         num_decoder_blocks: Number of decoder blocks in the decoder stack.
     """
+
     def __init__(
         self,
         input_num_embeddings: int,
@@ -91,19 +93,26 @@ class Transformer(nn.Module):
         from AIAYN: "In addition, we apply dropout to the sums of the embeddings and the positional
         encodings in both the encoder and decoder stacks."
     """
+
     def __init__(self, t: TransformerParams, p: EncoderDecoderBlockParams) -> None:
         # Entities related to "encoder side"
         self.input_embedding = Embedding(p.d_model, t.input_num_embeddings)
-        self.input_positional_encoding = PositionalEncoding(p.d_model, t.input_max_seq_len)
+        self.input_positional_encoding = PositionalEncoding(
+            p.d_model, t.input_max_seq_len
+        )
         self.input_positional_encoding_dropout = nn.Dropout(p.dropout_prob)
         self.encoder_stack = EncoderStack(p, t.num_encoder_blocks)
 
         # Entities related to "decoder side"
         self.output_embedding = Embedding(p.d_model, t.output_num_embeddings)
-        self.output_positional_encoding = PositionalEncoding(p.d_model, t.output_max_seq_len)
+        self.output_positional_encoding = PositionalEncoding(
+            p.d_model, t.output_max_seq_len
+        )
         self.output_positional_encoding_dropout = nn.Dropout(p.dropout_prob)
         self.decoder_stack = DecoderStack(p, t.num_decoder_blocks)
-        self.pre_softmax_affine = nn.Linear(p.d_model, t.output_num_embeddings, bias=True)
+        self.pre_softmax_affine = nn.Linear(
+            p.d_model, t.output_num_embeddings, bias=True
+        )
 
         # Tie weight matrices
         self.output_embedding.embedding.weight = self.input_embedding.embedding.weight
