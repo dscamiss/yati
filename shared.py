@@ -1,4 +1,4 @@
-"""Shared classes."""
+"""Implementation of blocks which are shared between the encoder/decoder sides."""
 
 import math
 import torch
@@ -33,7 +33,9 @@ class MultiHeadAttention(nn.Module):
         d_model: Embedding dimension.
         d_k: Number of rows in "Q" and "K" matrices.
         d_v: Number of rows in "V" matrices.
-
+        causal_mask: True <==> Apply causal mask.  Defaults to False.
+        max_seq_len: Maximum input sequence length.  Only used when
+            `causal_mask` is True.  Defaults to -1.
     Note:
         Following AIAYN, head i has parameter matrices W_i^Q, W_i^K, W_i^V.
         In this implementation, these parameter matrices are not maintained
@@ -53,7 +55,15 @@ class MultiHeadAttention(nn.Module):
         enforced in some implementations.
     """
 
-    def __init__(self, h: int, d_model: int, d_k: int, d_v: int) -> None:
+    def __init__(
+        self,
+        h: int,
+        d_model: int,
+        d_k: int,
+        d_v: int,
+        apply_causal_mask: bool = False,
+        max_seq_len: int = -1,
+    ) -> None:
         super().__init__()
         self.h = h
         self.w_q = nn.Linear(d_model, h * d_k, bias=False)
@@ -61,6 +71,20 @@ class MultiHeadAttention(nn.Module):
         self.w_v = nn.Linear(d_model, h * d_v, bias=False)
         self.w_o = nn.Linear(h * d_v, d_model, bias=False)
         self.scaling_factor = math.sqrt(d_k)
+        self.apply_causal_mask = apply_causal_mask
+
+        if self.apply_causal_mask:
+            # Sanity check: `max_seq_len` must be positive to apply causal mask
+            assert max_seq_len > 0, "max_seq_len > 0 is required to apply causal mask"
+
+            # Compute causal mask
+            causal_mask = torch.ones(max_seq_len, max_seq_len)
+            causal_mask = (
+                torch.tril(causal_mask).unsqueeze(0).unsqueeze(0)
+            )  # (1, 1, max_seq_len, max_seq_len)
+
+            # Ensure `causal_mask` is saved as part of the module state
+            self.register_buffer("causal_mask", causal_mask)
 
     def forward(self, q: Tensor, k: Tensor, v: Tensor) -> Tensor:
         """Compute multi-head attention output.
@@ -90,6 +114,10 @@ class MultiHeadAttention(nn.Module):
         x = (
             einsum(q, k, "b h i j, b h j k -> b h i k") / self.scaling_factor
         )  # (b, h, n, n)
+
+        if self.apply_causal_mask:
+            n = x.shape[-1]
+            x = x.masked_fill(self.causal_mask[:, :, :n, :n] == 0, float("-inf"))
         x = torch.softmax(x, dim=-1)  # (b, h, n, n)
 
         x = einsum(x, v, "b h i j, b h j k -> b h i k")  # (b, h, n, d_v)
@@ -98,31 +126,8 @@ class MultiHeadAttention(nn.Module):
         return self.w_o(x)  # (b, n, d_model)
 
 
-class EncoderDecoderBlockParams:
-    """Data class for encoder/decoder block parameters.
-
-    Args:
-        h: Number of heads in multi-head attention block.
-        d_model: Embedding dimension.
-        d_k: Number of rows in "Q" and "K" matrices.
-        d_v: Number of rows in "V" matrix.
-        d_ff: Hidden layer dimension in feed-forward block.
-        dropout_prob: Dropout probability.
-    """
-
-    def __init__(
-        self, h: int, d_model: int, d_k: int, d_v: int, d_ff: int, dropout_prob: float
-    ):
-        self.h = h
-        self.d_model = d_model
-        self.d_k = d_k
-        self.d_v = d_v
-        self.d_ff = d_ff
-        self.dropout_prob = dropout_prob
-
-
 class Embedding(nn.Module):
-    """Embedding layer.
+    """Embedding block.
 
     Args:
         d_model (:obj:`int`): Embedding dimension.
@@ -210,3 +215,43 @@ class LayerNormalization(nn.Module):
 
         """
         return self.layer_norm(x)
+
+
+class PositionalEncoding(nn.Module):
+    """Positional encoding block.
+
+    Definition from AIAYN:
+        PE(pos, 2i)     = sin(pos / 10000^{2i / d_model})
+        PE(pos, 2i + 1) = cos(pos / 10000^{2i / d_model})
+
+    For numerical stability, we exponentiate logarithms:
+        log(1 / 10000^{2i / d_model}) = -(log(10000) / d_model) 2i
+
+    """
+
+    def __init__(self, d_model: int, max_seq_len: int) -> None:
+        super().__init__()
+
+        pos = torch.arange(0, max_seq_len, dtype=torch.float).unsqueeze(-1)  # (n, 1)
+        idx = torch.arange(0, d_model, 2, dtype=torch.float)
+        log_den = -(math.log(10000.0) / d_model) * idx
+        den = torch.exp(log_den).unsqueeze(0)  # (1, d_model)
+
+        pe = torch.zeros(1, max_seq_len, d_model)
+        pe[:, :, 0::2] = torch.sin(pos * den)
+        pe[:, :, 1::2] = torch.cos(pos * den)
+
+        # Ensure `pe` is saved as part of the module state.
+        self.register_buffer("pe", pe)
+
+    def forward(self, x: Tensor) -> Tensor:
+        """
+        Add positional encoding to input tensor.
+
+        Args:
+        ----
+            x (`torch.Tensor`): Input tensor of shape (b, n, d_model)
+
+        """
+        n = x.shape[1]
+        return x + self.pe[:, :n, :].requires_grad_(False)

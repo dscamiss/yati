@@ -1,10 +1,10 @@
-"""Encoder portion of yati: Yet another transformer implementation."""
+"""Implementation of blocks which are on the encoder side only."""
 
 import torch.nn as nn
 
+from params import EncoderDecoderParams
 from shared import (
     AddAndNorm,
-    EncoderDecoderBlockParams,
     FeedForward,
     MultiHeadAttention,
 )
@@ -15,7 +15,7 @@ class EncoderBlock(nn.Module):
     """Encoder block.
 
     Args:
-        p: Instance of `EncoderDecoderBlockParams`.
+        p: Instance of `EncoderDecoderParams`.
 
     Attributes:
         multi_head_attention: Instance of `MultiHeadAttention` used in sub-layer 1.
@@ -35,7 +35,7 @@ class EncoderBlock(nn.Module):
         in sub-layer 1.
     """
 
-    def __init__(self, p: EncoderDecoderBlockParams) -> None:
+    def __init__(self, p: EncoderDecoderParams) -> None:
         super().__init__()
         self.multi_head_attention = MultiHeadAttention(p.h, p.d_model, p.d_k, p.d_v)
         self.multi_head_attention_dropout = nn.Dropout(p.dropout_prob)
@@ -67,11 +67,11 @@ class EncoderStack(nn.Module):
     """Encoder stack.
 
     Args:
-        p: Instance of `EncoderDecoderBlockParams`.
+        p: Instance of `EncoderDecoderParams`.
         num_encoder_blocks: Number of encoder blocks in the stack.
     """
 
-    def __init__(self, p: EncoderDecoderBlockParams, num_encoder_blocks: int) -> None:
+    def __init__(self, p: EncoderDecoderParams, num_encoder_blocks: int) -> None:
         super().__init__()
         self.encoder_blocks = nn.ModuleList(
             [EncoderBlock(p) for _ in range(num_encoder_blocks)]

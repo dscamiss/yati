@@ -1,10 +1,10 @@
-"""Decoder portion of yati: Yet another transformer implementation."""
+"""Implementation of blocks which are on the decoder side only."""
 
 import torch.nn as nn
 
+from params import EncoderDecoderParams
 from shared import (
     AddAndNorm,
-    EncoderDecoderBlockParams,
     FeedForward,
     MultiHeadAttention,
 )
@@ -15,7 +15,7 @@ class DecoderBlock(nn.Module):
     """Decoder block.
 
     Args:
-        p: Instance of `EncoderDecoderBlockParams`.
+        p: Instance of `EncoderDecoderParams`.
 
     Attributes:
         multi_head_attention_1: Instance of `MultiHeadAttention` used in sub-layer 1.
@@ -39,9 +39,11 @@ class DecoderBlock(nn.Module):
         sub-layer 2.
     """
 
-    def __init__(self, p: EncoderDecoderBlockParams) -> None:
+    def __init__(self, p: EncoderDecoderParams) -> None:
         super().__init__()
-        self.multi_head_attention_1 = MultiHeadAttention(p.h, p.d_model, p.d_k, p.d_v)
+        self.multi_head_attention_1 = MultiHeadAttention(
+            p.h, p.d_model, p.d_k, p.d_v, True, p.output_max_seq_len
+        )
         self.multi_head_attention_dropout_1 = nn.Dropout(p.dropout_prob)
         self.multi_head_add_and_norm_1 = AddAndNorm(p.d_model)
         self.multi_head_attention_2 = MultiHeadAttention(p.h, p.d_model, p.d_k, p.d_v)
@@ -59,7 +61,7 @@ class DecoderBlock(nn.Module):
             y_enc: Encoder stack output tensor of size (b, n, d_model).
         """
         # Compute sub-layer 1 output
-        y = self.multi_head_attention_1(x, x, x, causal_mask=True)
+        y = self.multi_head_attention_1(x, x, x)
         y = self.multi_head_attention_dropout_1(y)
         y = self.multi_head_add_and_norm_1(x, y)
 
@@ -80,7 +82,7 @@ class DecoderStack(nn.Module):
     """Decoder stack.
 
     Args:
-        p: Instance of `EncoderDecoderBlockParams`.
+        p: Instance of `EncoderDecoderParams`.
         num_decoder_blocks: Number of decoder blocks in the stack.
 
     Note:
@@ -94,7 +96,7 @@ class DecoderStack(nn.Module):
         blocks is equal to the number of decoder blocks.)
     """
 
-    def __init__(self, p: EncoderDecoderBlockParams, num_decoder_blocks: int) -> None:
+    def __init__(self, p: EncoderDecoderParams, num_decoder_blocks: int) -> None:
         super().__init__()
         self.decoder_blocks = nn.ModuleList(
             [DecoderBlock(p) for _ in range(num_decoder_blocks)]
