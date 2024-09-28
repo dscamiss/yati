@@ -1,5 +1,4 @@
-# yati
-Yet Another Transformer Implementation
+# yati -- Yet Another Transformer Implementation
 
 This project implements the Transformer model, as described in
 "Attention is All You Need" (AIAYN).  The model is of the encoder/decoder
