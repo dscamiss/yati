@@ -62,7 +62,9 @@ def get_expected_output(attention: MultiHeadAttention, x: Tensor) -> Tensor:
         qk_transpose = q @ k.transpose(-1, -2) / scaling_factor  # (b, n, n)
         if apply_causal_mask:
             n = qk_transpose.shape[-1]
-            qk_transpose = qk_transpose.masked_fill(causal_mask[:, :, :n, :n] == 0, float("-inf"))
+            qk_transpose = qk_transpose.masked_fill(
+                causal_mask[:, :, :n, :n] == 0, float("-inf")
+            )
         s = torch.softmax(qk_transpose, dim=-1)  # (b, n, n)
         y_expected.append(s @ v)  # (b, n, d_v)
 

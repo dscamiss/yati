@@ -7,5 +7,4 @@ __all__ = [
     "multi_head_attention",
 ]
 
-from . import (add_and_norm, feed_forward, multi_head_attention,
-               positional_encoding)
+from . import add_and_norm, feed_forward, multi_head_attention, positional_encoding

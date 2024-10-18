@@ -21,7 +21,8 @@ max-line-length = 100
 disable = [
     "C0411",  # wrong import order
     "R0913",  # too many arguments
-    "R0917",  # tto many positional arguments
+    "R0914",  # too many locals
+    "R0917",  # too many positional arguments
 ]
 
 [tool.pylint.design]
