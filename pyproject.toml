@@ -1,0 +1,35 @@
+[tool.flake8]
+max-line-length = 100
+ignore = ["F722"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "tab"
+docstring-code-format = true
+
+[tool.ruff.lint]
+ignore = ["F722"]
+
+[tool.pylint]
+max-line-length = 100
+disable = [
+    "C0411",  # wrong import order
+    "R0913",  # too many arguments
+    "R0917",  # tto many positional arguments
+]
+
+[tool.pylint.design]
+max-attributes = 10
+
+[tool.pylint.main]
+source-roots = ["."]
+
+[tool.pylint.typecheck]
+generated-members = ["numpy.*", "torch.*"]
+
