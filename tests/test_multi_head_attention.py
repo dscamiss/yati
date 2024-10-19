@@ -19,13 +19,13 @@ def fixture_x() -> Tensor:
 @pytest.fixture(name="attention_no_causal_mask")
 def fixture_attention_no_causal_mask(x) -> MultiHeadAttention:
     """Test fixture with MultiHeadAttention object (no causal mask)."""
-    return MultiHeadAttention(2, x.shape[-1], 5, 6)
+    return MultiHeadAttention(x.shape[-1], 2, 5, 6)
 
 
 @pytest.fixture(name="attention_causal_mask")
 def fixture_attention_causal_mask(x) -> MultiHeadAttention:
     """Test fixture with MultiHeadAttention object (causal mask)."""
-    return MultiHeadAttention(2, x.shape[-1], 5, 6, True, 16)
+    return MultiHeadAttention(x.shape[-1], 2, 5, 6, True, 16)
 
 
 def get_expected_output(attention: MultiHeadAttention, x: Tensor) -> Tensor:

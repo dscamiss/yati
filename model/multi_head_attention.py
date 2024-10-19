@@ -14,13 +14,16 @@ class MultiHeadAttention(nn.Module):
     """Multi-head attention layer.
 
     Args:
-        h (int): Number of heads.
         d_input (int): Input dimension.
-        d_k (int): Number of rows in {Q,K}-matrices.
+        h (int): Number of heads.
+        d_k (int): Number of rows in {Q, K}-matrices.
         d_v (int): Number of rows in V-matrix.
         apply_causal_mask (bool): Apply causal mask (default = False).
         max_seq_len (int): Maximum input sequence length.  This argument is
             only used when apply_causal_mask is True (default = -1).
+
+    Raises:
+        ValueError: If apply_causal_mask is True and max_seq_len <= 0.
 
     Note:
         Following AIAYN, head i has parameter matrices W_i^Q, W_i^K, W_i^V.
@@ -46,8 +49,8 @@ class MultiHeadAttention(nn.Module):
 
     def __init__(
         self,
-        h: int,
         d_input: int,
+        h: int,
         d_k: int,
         d_v: int,
         apply_causal_mask: bool = False,
@@ -130,5 +133,5 @@ class MultiHeadAttention(nn.Module):
         return self._h
 
     def get_weights(self) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
-        """Getter for weight matrices of Linear layers (for test purposes)."""
+        """Getter for weight matrices in Linear layers."""
         return (self._w_q.weight, self._w_k.weight, self._w_v.weight, self._w_o.weight)
