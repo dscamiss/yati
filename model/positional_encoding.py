@@ -34,9 +34,7 @@ class PositionalEncoding(nn.Module):
         if d_input % 2 != 0:
             raise ValueError("d_input must be divisible by 2")
 
-        pos = torch.arange(0, max_seq_len, dtype=torch.float).unsqueeze(
-            -1
-        )  # (max_seq_len, 1)
+        pos = torch.arange(0, max_seq_len, dtype=torch.float).unsqueeze(-1)  # (max_seq_len, 1)
         idx = torch.arange(0, d_input, 2, dtype=torch.float)  # (d_input / 2)
 
         # Compute 10000^(2i / d_input) in log-space for numerical stability

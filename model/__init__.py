@@ -2,6 +2,7 @@
 
 __all__ = [
     "add_and_norm",
+    "decoder_stack",
     "encoder_stack",
     "feed_forward",
     "positional_encoding",
@@ -10,6 +11,7 @@ __all__ = [
 
 from . import (
     add_and_norm,
+    decoder_stack,
     encoder_stack,
     feed_forward,
     multi_head_attention,

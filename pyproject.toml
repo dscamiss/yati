@@ -1,6 +1,15 @@
+[tool.black]
+line-length = 100
+
 [tool.flake8]
 max-line-length = 100
 ignore = ["F722"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
@@ -12,6 +21,9 @@ line-length = 100
 quote-style = "single"
 indent-style = "tab"
 docstring-code-format = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.ruff.lint]
 ignore = ["F722"]

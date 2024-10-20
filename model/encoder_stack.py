@@ -55,9 +55,12 @@ class Encoder(nn.Module):
         super().__init__()
         d_input, h, d_k, d_v, d_ff, p_dropout = encoder_params
 
+        # Sub-layer 1 objects
         self._multi_head_attention = MultiHeadAttention(d_input, h, d_k, d_v)
         self._multi_head_attention_dropout = nn.Dropout(p_dropout)
         self._multi_head_attention_add_and_norm = AddAndNorm(d_input)
+
+        # Sub-layer 2 objects
         self._feed_forward = FeedForward(d_input, d_ff)
         self._feed_forward_dropout = nn.Dropout(p_dropout)
         self._feed_forward_add_and_norm = AddAndNorm(d_input)
@@ -93,9 +96,7 @@ class EncoderStack(nn.Module):
     def __init__(self, num_layers: int, encoder_params: EncoderParams) -> None:
         super().__init__()
 
-        self.encoder_layers = nn.ModuleList(
-            [Encoder(encoder_params) for _ in range(num_layers)]
-        )
+        self.encoder_layers = nn.ModuleList([Encoder(encoder_params) for _ in range(num_layers)])
 
     @jaxtyped(typechecker=typechecker)
     def forward(self, x: Float[Tensor, "b n d_input"]) -> Float[Tensor, "b n d_input"]:

@@ -73,9 +73,7 @@ class MultiHeadAttention(nn.Module):
 
             # Compute causal mask
             mask = torch.ones(max_seq_len, max_seq_len)
-            mask = (
-                torch.tril(mask).unsqueeze(0).unsqueeze(0)
-            )  # (1, 1, max_seq_len, max_seq_len)
+            mask = torch.tril(mask).unsqueeze(0).unsqueeze(0)  # (1, 1, max_seq_len, max_seq_len)
 
             # Ensure mask is saved as part of the module state
             self.register_buffer("_causal_mask", mask)
