@@ -1,48 +1,21 @@
 """Implementation of decoder stack objects."""
 
-from dataclasses import astuple, dataclass
-from typing import Any, Iterator
-
 from jaxtyping import Float, jaxtyped
 from torch import Tensor, nn
 from typeguard import typechecked as typechecker
 
 from .add_and_norm import AddAndNorm
+from .encoder_decoder_params import EncoderDecoderParams
 from .feed_forward import FeedForward
 from .multi_head_attention import MultiHeadAttention
-
-
-@dataclass
-class DecoderParams:
-    """Dataclass for decoder layer parameters.
-
-    Args:
-        d_input (int): Input dimension.
-        h (int): Number of heads; used in sub-layers 1 and 2.
-        d_k (int): Number of rows in {Q, K}-matrices; used in sub-layers 1 and 2.
-        d_v (int): Number of rows in V-matrix; used in sub-layers 1 and 2.
-        d_ff (int): Hidden layer dimension; used in sub-layer 3.
-        p_dropout (float): Dropout probability.
-        max_seq_len (int): Maximum input sequence length.
-    """
-
-    d_input: int
-    h: int
-    d_k: int
-    d_v: int
-    d_ff: int
-    p_dropout: float
-    max_seq_len: int
-
-    def __iter__(self) -> Iterator[Any]:
-        return iter(astuple(self))
 
 
 class Decoder(nn.Module):
     """Decoder layer.
 
     Args:
-        decoder_params (DecoderParams): Decoder layer parameters.
+        params (EncoderDecoderParams): Decoder layer parameters.
+        max_seq_len (int): Maximum input sequence length.
 
     Note:
         Regarding the placement of the dropout layers, we follow the remark in AIAYN
@@ -50,14 +23,13 @@ class Decoder(nn.Module):
         it is added to the sub-layer input and normalized."
 
     Note:
-        Following AIAYN, causal masking is applied in the multi-head attention block
-        used in sub-layer 1, and causal masking is not applied in the multi-head
-        attention block used in sub-layer 2.
+        Following AIAYN, causal masking is applied in sub-layer 1, and is not applied
+        in sub-layer 2.
     """
 
-    def __init__(self, decoder_params: DecoderParams) -> None:
+    def __init__(self, params: EncoderDecoderParams, max_seq_len: int) -> None:
         super().__init__()
-        d_input, h, d_k, d_v, d_ff, p_dropout, max_seq_len = decoder_params
+        d_input, h, d_k, d_v, d_ff, p_dropout = params
 
         # Sub-layer 1 objects
         self._multi_head_attention_1 = MultiHeadAttention(d_input, h, d_k, d_v, True, max_seq_len)
@@ -113,7 +85,8 @@ class DecoderStack(nn.Module):
 
     Args:
         num_layers (int): Number of decoder layers.
-        decoder_params (DecoderParams): Decoder layer parameters.
+        params (EncoderDecoderParams): Decoder layer parameters.
+        max_seq_len (int): Maximum input sequence length.
 
     Note:
         Regarding the use of the encoder stack output, we refer to the remark in AIAYN which
@@ -122,10 +95,9 @@ class DecoderStack(nn.Module):
         used as the cross-attention input in each decoder block.
     """
 
-    def __init__(self, num_layers: int, decoder_params: DecoderParams) -> None:
+    def __init__(self, num_layers: int, params: EncoderDecoderParams, max_seq_len: int) -> None:
         super().__init__()
-
-        self.layers = nn.ModuleList([Decoder(decoder_params) for _ in range(num_layers)])
+        self._layers = nn.ModuleList([Decoder(params, max_seq_len) for _ in range(num_layers)])
 
     def forward(
         self,
@@ -142,6 +114,7 @@ class DecoderStack(nn.Module):
             In the encoder/decoder Transformer architecture, x_cross is the final output
             of the encoder stack.
         """
-        for layer in self.layers:
+        for layer in self._layers:
             x = layer(x, x_cross)  # (b, n, d_input)
+
         return x

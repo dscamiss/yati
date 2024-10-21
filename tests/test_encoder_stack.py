@@ -5,7 +5,8 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.encoder_stack import Encoder, EncoderParams, EncoderStack
+from model.encoder_decoder_params import EncoderDecoderParams
+from model.encoder_stack import Encoder, EncoderStack
 
 
 @pytest.fixture(name="x")
@@ -15,9 +16,9 @@ def fixture_x() -> Tensor:
 
 
 @pytest.fixture(name="encoder_params")
-def fixture_encoder_params(x) -> EncoderParams:
+def fixture_encoder_params(x) -> EncoderDecoderParams:
     """Test fixture with encoder parameters."""
-    return EncoderParams(x.shape[-1], 2, 5, 6, 16, 0.1)
+    return EncoderDecoderParams(x.shape[-1], 2, 5, 6, 16, 0.1)
 
 
 @pytest.fixture(name="encoder")

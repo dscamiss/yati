@@ -5,7 +5,8 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.decoder_stack import Decoder, DecoderParams, DecoderStack
+from model.decoder_stack import Decoder, DecoderStack
+from model.encoder_decoder_params import EncoderDecoderParams
 
 
 @pytest.fixture(name="x")
@@ -21,21 +22,27 @@ def fixture_x_cross(x) -> Tensor:
 
 
 @pytest.fixture(name="decoder_params")
-def fixture_decoder_params(x) -> DecoderParams:
+def fixture_decoder_params(x) -> EncoderDecoderParams:
     """Test fixture with decoder parameters."""
-    return DecoderParams(x.shape[-1], 2, 5, 6, 16, 0.1, 32)
+    return EncoderDecoderParams(x.shape[-1], 2, 5, 6, 16, 0.1)
+
+
+@pytest.fixture(name="max_seq_len")
+def fixture_max_seq_len() -> int:
+    """Test fixture with maximum sequence length."""
+    return 1000
 
 
 @pytest.fixture(name="decoder")
-def fixture_decoder(decoder_params) -> Decoder:
-    """Test fixture with decoder object."""
-    return Decoder(decoder_params)
+def fixture_decoder(decoder_params, max_seq_len) -> Decoder:
+    """Test fixture with Decoder object."""
+    return Decoder(decoder_params, max_seq_len)
 
 
 @pytest.fixture(name="decoder_stack")
-def fixture_decoder_stack(decoder_params) -> DecoderStack:
+def fixture_decoder_stack(decoder_params, max_seq_len) -> DecoderStack:
     """Test fixture with DecoderStack object."""
-    return DecoderStack(6, decoder_params)
+    return DecoderStack(6, decoder_params, max_seq_len)
 
 
 def test_decoder_valid_input(x, x_cross, decoder) -> None:
