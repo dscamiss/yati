@@ -32,23 +32,23 @@ def fixture_encoder_stack(encoder_params) -> EncoderStack:
     return EncoderStack(6, encoder_params)
 
 
-def test_encoder_valid_input(encoder, x) -> None:
-    """Test encoder layer with valid input."""
+def test_encoder_valid_input(x, encoder) -> None:
+    """Test output with valid input."""
     assert encoder(x).shape == x.shape
 
 
 def test_encoder_invalid_input(encoder) -> None:
-    """Test encoder layer with invalid input."""
+    """Test behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         encoder(torch.ones(16, 1))
 
 
-def test_encoder_stack_valid_input(encoder_stack, x) -> None:
-    """Test encoder stack with valid input."""
+def test_encoder_stack_valid_input(x, encoder_stack) -> None:
+    """Test output with valid input."""
     assert encoder_stack(x).shape == x.shape
 
 
 def test_encoder_stack_invalid_input(encoder_stack) -> None:
-    """Test encoder stack with invalid input."""
+    """Test behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         encoder_stack(torch.ones(16, 1))

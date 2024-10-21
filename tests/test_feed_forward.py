@@ -20,10 +20,9 @@ def fixture_feed_forward(x) -> FeedForward:
     return FeedForward(x.shape[-1], 16)
 
 
-def test_feed_forward_valid_input(feed_forward, x) -> None:
+def test_feed_forward_valid_input(x, feed_forward) -> None:
     """Test output with valid input."""
-    y = feed_forward(x)
-    assert y.shape == x.shape
+    assert feed_forward(x).shape == x.shape
 
 
 def test_feed_forward_invalid_input(feed_forward) -> None:

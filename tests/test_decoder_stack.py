@@ -38,25 +38,27 @@ def fixture_decoder_stack(decoder_params) -> DecoderStack:
     return DecoderStack(6, decoder_params)
 
 
-def test_decoder_valid_input(decoder, x, x_cross) -> None:
-    """Test decoder layer with valid inputs."""
+def test_decoder_valid_input(x, x_cross, decoder) -> None:
+    """Test output with valid inputs."""
     assert decoder(x, x_cross).shape == x.shape
 
 
-def test_decoder_invalid_input(decoder, x, x_cross) -> None:
-    """Test decoder layer with invalid inputs."""
+def test_decoder_invalid_input(x, x_cross, decoder) -> None:
+    """Test behavior with invalid inputs."""
     with pytest.raises(TypeCheckError):
         decoder(x, torch.ones(16, 1))
+    with pytest.raises(TypeCheckError):
         decoder(torch.ones(16, 1), x_cross)
 
 
-def test_decoder_stack_valid_input(decoder_stack, x, x_cross) -> None:
-    """Test decoder stack with valid inputs."""
+def test_decoder_stack_valid_inputs(x, x_cross, decoder_stack) -> None:
+    """Test output with valid inputs."""
     assert decoder_stack(x, x_cross).shape == x.shape
 
 
-def test_encoder_stack_invalid_input(decoder_stack, x, x_cross) -> None:
-    """Test encoder stack with invalid inputs."""
+def test_encoder_stack_invalid_inputs(x, x_cross, decoder_stack) -> None:
+    """Test behavior with invalid inputs."""
     with pytest.raises(TypeCheckError):
         decoder_stack(torch.ones(16, 1), x_cross)
+    with pytest.raises(TypeCheckError):
         decoder_stack(x, torch.ones(16, 1))

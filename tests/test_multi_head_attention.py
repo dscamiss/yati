@@ -71,8 +71,8 @@ def get_expected_output(attention: MultiHeadAttention, x: Tensor) -> Tensor:
     return y_expected @ o_weight.transpose(-1, -2)
 
 
-def test_no_causal_mask_valid_input(attention_no_causal_mask, x) -> None:
-    """Test output with valid input."""
+def test_no_causal_mask_valid_inputs(x, attention_no_causal_mask) -> None:
+    """Test output with valid inputs."""
     y = attention_no_causal_mask(x, x, x)
     assert y.shape == x.shape
 
@@ -80,16 +80,18 @@ def test_no_causal_mask_valid_input(attention_no_causal_mask, x) -> None:
     assert torch.allclose(y, y_expected)
 
 
-def test_no_causal_mask_invalid_input(attention_no_causal_mask, x) -> None:
-    """Test behavior with invalid input."""
+def test_no_causal_mask_invalid_input(x, attention_no_causal_mask) -> None:
+    """Test behavior with invalid inputs."""
     with pytest.raises(TypeCheckError):
         attention_no_causal_mask(torch.ones(16, 1), x, x)
+    with pytest.raises(TypeCheckError):
         attention_no_causal_mask(x, torch.ones(16, 1), x)
+    with pytest.raises(TypeCheckError):
         attention_no_causal_mask(x, x, torch.ones(16, 1))
 
 
-def test_causal_mask_valid_input(attention_causal_mask, x) -> None:
-    """Test output with valid input."""
+def test_causal_mask_valid_inputs(x, attention_causal_mask) -> None:
+    """Test output with valid inputs."""
     y = attention_causal_mask(x, x, x)
     assert y.shape == x.shape
 
@@ -97,11 +99,13 @@ def test_causal_mask_valid_input(attention_causal_mask, x) -> None:
     assert torch.allclose(y, y_expected)
 
 
-def test_causal_mask_invalid_input(attention_causal_mask, x) -> None:
-    """Test behavior with invalid input."""
+def test_causal_mask_invalid_inputs(x, attention_causal_mask) -> None:
+    """Test behavior with invalid inputs."""
     with pytest.raises(TypeCheckError):
         attention_causal_mask(torch.ones(16, 1), x, x)
+    with pytest.raises(TypeCheckError):
         attention_causal_mask(x, torch.ones(16, 1), x)
+    with pytest.raises(TypeCheckError):
         attention_causal_mask(x, x, torch.ones(16, 1))
 
 
