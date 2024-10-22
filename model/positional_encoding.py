@@ -60,4 +60,4 @@ class PositionalEncoding(nn.Module):
         """
         if x.shape[1] > self.encoding.shape[1]:
             raise ValueError(f"x has invalid shape {x.shape}")
-        return x + self.encoding[:, :x.shape[1], :].requires_grad_(False)
+        return x + self.encoding[:, : x.shape[1], :].requires_grad_(False)

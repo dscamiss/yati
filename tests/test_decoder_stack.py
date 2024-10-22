@@ -6,7 +6,7 @@ from jaxtyping import TypeCheckError
 from torch import Tensor
 
 from model.decoder_stack import Decoder, DecoderStack
-from model.encoder_decoder_params import EncoderDecoderParams
+from params.encoder_decoder_params import EncoderDecoderParams
 
 
 @pytest.fixture(name="x")

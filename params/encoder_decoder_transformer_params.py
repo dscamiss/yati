@@ -3,7 +3,7 @@
 from dataclasses import astuple, dataclass
 from typing import Any, Iterator
 
-from model.encoder_decoder_params import EncoderDecoderParams
+from params.encoder_decoder_params import EncoderDecoderParams
 
 
 @dataclass

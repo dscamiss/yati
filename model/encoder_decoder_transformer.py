@@ -7,9 +7,9 @@ from typeguard import typechecked as typechecker
 
 from model.decoder_stack import DecoderStack
 from model.embedding import Embedding
-from model.encoder_decoder_transformer_params import EncoderDecoderTransformerParams
 from model.encoder_stack import EncoderStack
 from model.positional_encoding import PositionalEncoding
+from params.encoder_decoder_transformer_params import EncoderDecoderTransformerParams
 
 
 class EncoderDecoderTransformer(nn.Module):  # pylint: disable=abstract-method
