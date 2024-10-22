@@ -14,7 +14,7 @@ class Encoder(nn.Module):
     """Encoder layer.
 
     Args:
-        params (EncoderDecoderParams): Encoder layer parameters.
+        params (EncoderDecoderParams): Encoder parameters.
 
     Note:
         Regarding the placement of the dropout layers, we follow the remark in AIAYN

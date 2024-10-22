@@ -57,10 +57,6 @@ class Decoder(nn.Module):
         Args:
             x (Tensor): Input tensor.
             x_cross (Tensor): Cross-attention input tensor.
-
-        Note:
-            In the encoder/decoder Transformer architecture, x_cross is the final output
-            of the encoder stack.
         """
         # Compute sub-layer 1 output
         y = self._multi_head_attention_1(x, x, x)  # (b, n, d_input)
@@ -85,7 +81,7 @@ class DecoderStack(nn.Module):
 
     Args:
         num_layers (int): Number of decoder layers.
-        params (EncoderDecoderParams): Decoder layer parameters.
+        params (EncoderDecoderParams): Decoder parameters.
         max_seq_len (int): Maximum input sequence length.
 
     Note:
@@ -108,11 +104,8 @@ class DecoderStack(nn.Module):
 
         Args:
             x (Tensor): Input tensor.
-            x_cross (Tensor): Cross-attention input tensor.
-
-        Note:
-            In the encoder/decoder Transformer architecture, x_cross is the final output
-            of the encoder stack.
+            x_cross (Tensor): Cross-attention input tensor.  In the encoder/decoder transformer
+                architecture, this is the final output of the encoder stack.
         """
         for layer in self._layers:
             x = layer(x, x_cross)  # (b, n, d_input)

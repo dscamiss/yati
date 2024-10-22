@@ -20,12 +20,12 @@ def fixture_feed_forward(x) -> FeedForward:
     return FeedForward(x.shape[-1], 16)
 
 
-def test_feed_forward_valid_input(x, feed_forward) -> None:
+def test_valid_input(x, feed_forward) -> None:
     """Test output with valid input."""
     assert feed_forward(x).shape == x.shape
 
 
-def test_feed_forward_invalid_input(feed_forward) -> None:
+def test_invalid_input(feed_forward) -> None:
     """Test behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         feed_forward(torch.ones(16, 1))

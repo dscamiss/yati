@@ -39,13 +39,13 @@ def fixture_add_and_norm(x) -> AddAndNorm:
     return AddAndNorm(x.shape[-1])
 
 
-def test_add_and_norm_valid_inputs(x, y, add_and_norm) -> None:
+def test_valid_inputs(x, y, add_and_norm) -> None:
     """Test output with valid inputs."""
     z = add_and_norm(x, y)
     assert z.shape == x.shape and torch.all(z == 0.0)
 
 
-def test_add_and_norm_invalid_inputs(x, y, add_and_norm) -> None:
+def test_invalid_inputs(x, y, add_and_norm) -> None:
     """Test behavior with invalid inputs."""
     with pytest.raises(TypeCheckError):
         add_and_norm(torch.ones(16, 1), y)

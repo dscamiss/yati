@@ -34,6 +34,8 @@ class PositionalEncoding(nn.Module):
         if d_input % 2 != 0:
             raise ValueError("d_input must be divisible by 2")
 
+        self.max_seq_len = max_seq_len
+
         pos = torch.arange(0, max_seq_len, dtype=torch.float).unsqueeze(-1)  # (max_seq_len, 1)
         idx = torch.arange(0, d_input, 2, dtype=torch.float)  # (d_input / 2)
 
@@ -56,5 +58,6 @@ class PositionalEncoding(nn.Module):
         Args:
             x (Tensor): Input tensor.
         """
-        n = x.shape[1]
-        return x + self.encoding[:, :n, :].requires_grad_(False)
+        if x.shape[1] > self.encoding.shape[1]:
+            raise ValueError(f"x has invalid shape {x.shape}")
+        return x + self.encoding[:, :x.shape[1], :].requires_grad_(False)

@@ -16,13 +16,19 @@ def fixture_x() -> Tensor:
     return torch.ones(2, 3, 4)
 
 
+@pytest.fixture(name="max_seq_len")
+def fixture_max_seq_len() -> Tensor:
+    """Test fixture with maximum input sequence length."""
+    return 1000
+
+
 @pytest.fixture(name="positional_encoding")
-def fixture_positional_encoding(x) -> PositionalEncoding:
+def fixture_positional_encoding(x, max_seq_len) -> PositionalEncoding:
     """Test fixture with PositionalEncoding object."""
-    return PositionalEncoding(x.shape[-1], 8)
+    return PositionalEncoding(x.shape[-1], max_seq_len)
 
 
-def test_valid_input(positional_encoding, x) -> None:
+def test_valid_input(x, positional_encoding) -> None:
     """Test output with valid input."""
     y = positional_encoding(x)
     assert y.shape == x.shape
@@ -41,10 +47,14 @@ def test_valid_input(positional_encoding, x) -> None:
         assert torch.allclose(y[b, :, :], x[b, :, :] + expected_encoding)
 
 
-def test_invalid_input(positional_encoding) -> None:
+def test_invalid_input(x, max_seq_len, positional_encoding) -> None:
     """Test behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         positional_encoding(torch.ones(16, 1))
+    with pytest.raises(ValueError):
+        invalid_shape = list(x.shape)
+        invalid_shape[1] = 2 * max_seq_len  # exceeds maximum input sequence length
+        positional_encoding(torch.randn(torch.Size(invalid_shape)))
 
 
 def test_invalid_init_arguments() -> None:

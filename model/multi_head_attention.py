@@ -19,7 +19,7 @@ class MultiHeadAttention(nn.Module):
         d_k (int): Number of rows in {Q, K}-matrices.
         d_v (int): Number of rows in V-matrix.
         apply_causal_mask (bool): Apply causal mask (default = False).
-        max_seq_len (int): Maximum input sequence length.  This argument is
+        max_seq_len (int): Maximum input sequence length.  This is
             only used when apply_causal_mask is True (default = -1).
 
     Raises:

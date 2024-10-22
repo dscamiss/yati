@@ -15,41 +15,41 @@ def fixture_x() -> Tensor:
     return torch.ones(2, 3, 4)
 
 
-@pytest.fixture(name="encoder_params")
-def fixture_encoder_params(x) -> EncoderDecoderParams:
+@pytest.fixture(name="params")
+def fixture_params(x) -> EncoderDecoderParams:
     """Test fixture with encoder parameters."""
     return EncoderDecoderParams(x.shape[-1], 2, 5, 6, 16, 0.1)
 
 
 @pytest.fixture(name="encoder")
-def fixture_encoder(encoder_params) -> Encoder:
+def fixture_encoder(params) -> Encoder:
     """Test fixture with Encoder object."""
-    return Encoder(encoder_params)
+    return Encoder(params)
 
 
 @pytest.fixture(name="encoder_stack")
-def fixture_encoder_stack(encoder_params) -> EncoderStack:
+def fixture_encoder_stack(params) -> EncoderStack:
     """Test fixture with EncoderStack object."""
-    return EncoderStack(6, encoder_params)
+    return EncoderStack(6, params)
 
 
 def test_encoder_valid_input(x, encoder) -> None:
-    """Test output with valid input."""
+    """Test encoder output with valid input."""
     assert encoder(x).shape == x.shape
 
 
 def test_encoder_invalid_input(encoder) -> None:
-    """Test behavior with invalid input."""
+    """Test encoder behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         encoder(torch.ones(16, 1))
 
 
-def test_encoder_stack_valid_input(x, encoder_stack) -> None:
+def test__valid_input(x, encoder_stack) -> None:
     """Test output with valid input."""
     assert encoder_stack(x).shape == x.shape
 
 
-def test_encoder_stack_invalid_input(encoder_stack) -> None:
+def test_invalid_input(encoder_stack) -> None:
     """Test behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         encoder_stack(torch.ones(16, 1))
