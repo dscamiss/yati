@@ -5,7 +5,7 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.embedding import Embedding
+from yati.model.embedding import Embedding
 
 
 @pytest.fixture(name="x")

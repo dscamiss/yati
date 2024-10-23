@@ -5,10 +5,10 @@ from jaxtyping import Float, Integer, jaxtyped
 from torch import Tensor, nn
 from typeguard import typechecked as typechecker
 
-from model.embedding import Embedding
-from model.positional_encoding import PositionalEncoding
-from model.reduced_decoder_stack import ReducedDecoderStack
-from params.decoder_only_transformer_params import DecoderOnlyTransformerParams
+from yati.model.embedding import Embedding
+from yati.model.positional_encoding import PositionalEncoding
+from yati.model.reduced_decoder_stack import ReducedDecoderStack
+from yati.params.decoder_only_transformer_params import DecoderOnlyTransformerParams
 
 
 class DecoderOnlyTransformer(nn.Module):  # pylint: disable=abstract-method

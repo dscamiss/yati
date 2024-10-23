@@ -5,8 +5,8 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.reduced_decoder_stack import ReducedDecoder, ReducedDecoderStack
-from params.encoder_decoder_params import EncoderDecoderParams
+from yati.model.reduced_decoder_stack import ReducedDecoder, ReducedDecoderStack
+from yati.params.encoder_decoder_params import EncoderDecoderParams
 
 
 @pytest.fixture(name="x")

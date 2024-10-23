@@ -5,7 +5,7 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.add_and_norm import AddAndNorm
+from yati.model.add_and_norm import AddAndNorm
 
 
 @pytest.fixture(name="x")

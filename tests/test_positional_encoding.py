@@ -7,7 +7,7 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.positional_encoding import PositionalEncoding
+from yati.model.positional_encoding import PositionalEncoding
 
 
 @pytest.fixture(name="x")

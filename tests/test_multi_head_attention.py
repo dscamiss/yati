@@ -7,7 +7,7 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.multi_head_attention import MultiHeadAttention
+from yati.model.multi_head_attention import MultiHeadAttention
 
 
 @pytest.fixture(name="x")

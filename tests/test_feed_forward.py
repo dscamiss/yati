@@ -5,7 +5,7 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.feed_forward import FeedForward
+from yati.model.feed_forward import FeedForward
 
 
 @pytest.fixture(name="x")

@@ -5,9 +5,9 @@ import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.decoder_only_transformer import DecoderOnlyTransformer
-from params.decoder_only_transformer_params import DecoderOnlyTransformerParams
-from params.encoder_decoder_params import EncoderDecoderParams
+from yati.model.decoder_only_transformer import DecoderOnlyTransformer
+from yati.params.decoder_only_transformer_params import DecoderOnlyTransformerParams
+from yati.params.encoder_decoder_params import EncoderDecoderParams
 
 
 @pytest.fixture(name="x")

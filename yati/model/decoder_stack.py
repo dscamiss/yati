@@ -4,10 +4,10 @@ from jaxtyping import Float, jaxtyped
 from torch import Tensor, nn
 from typeguard import typechecked as typechecker
 
-from model.add_and_norm import AddAndNorm
-from model.feed_forward import FeedForward
-from model.multi_head_attention import MultiHeadAttention
-from params.encoder_decoder_params import EncoderDecoderParams
+from yati.model.add_and_norm import AddAndNorm
+from yati.model.feed_forward import FeedForward
+from yati.model.multi_head_attention import MultiHeadAttention
+from yati.params.encoder_decoder_params import EncoderDecoderParams
 
 
 class Decoder(nn.Module):
