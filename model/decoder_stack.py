@@ -95,6 +95,7 @@ class DecoderStack(nn.Module):
         super().__init__()
         self._layers = nn.ModuleList([Decoder(params, max_seq_len) for _ in range(num_layers)])
 
+    @jaxtyped(typechecker=typechecker)
     def forward(
         self,
         x: Float[Tensor, "b n d_input"],
@@ -104,8 +105,7 @@ class DecoderStack(nn.Module):
 
         Args:
             x (Tensor): Input tensor.
-            x_cross (Tensor): Cross-attention input tensor.  In the encoder/decoder transformer
-                architecture, this is the final output of the encoder stack.
+            x_cross (Tensor): Cross-attention input tensor.
         """
         for layer in self._layers:
             x = layer(x, x_cross)  # (b, n, d_input)

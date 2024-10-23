@@ -1,4 +1,4 @@
-"""Implementation of dataclass for encoder/decoder transformer parameters."""
+"""Implementation of dataclass for transformer parameters."""
 
 from dataclasses import astuple, dataclass
 from typing import Any, Iterator
@@ -7,8 +7,8 @@ from params.encoder_decoder_params import EncoderDecoderParams
 
 
 @dataclass
-class EncoderDecoderTransformerParams:
-    """Dataclass for encoder/decoder transformer parameters.
+class TransformerParams:
+    """Dataclass for transformer parameters.
 
     Args:
         d_model (int): Input/output embedding dimension.

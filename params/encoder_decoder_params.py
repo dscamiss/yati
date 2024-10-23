@@ -1,4 +1,4 @@
-"""Implementation of dataclass for common encoder/decoder layer parameters."""
+"""Implementation of dataclass for encoder/decoder layer parameters."""
 
 from dataclasses import astuple, dataclass
 from typing import Any, Iterator
@@ -6,7 +6,7 @@ from typing import Any, Iterator
 
 @dataclass
 class EncoderDecoderParams:
-    """Dataclass for common encoder/decoder layer parameters.
+    """Dataclass for encoder/decoder layer parameters.
 
     Args:
         d_input (int): Input dimension.

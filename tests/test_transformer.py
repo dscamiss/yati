@@ -1,23 +1,29 @@
-"""Test code for multi-head attention layer."""
+"""Test code for transformer."""
 
 import pytest
 import torch
 from jaxtyping import TypeCheckError
 from torch import Tensor
 
-from model.encoder_decoder_transformer import EncoderDecoderTransformer
+from model.transformer import Transformer
 from params.encoder_decoder_params import EncoderDecoderParams
-from params.encoder_decoder_transformer_params import EncoderDecoderTransformerParams
+from params.transformer_params import TransformerParams
+
+
+@pytest.fixture(name="x")
+def fixture_x() -> Tensor:
+    """Test fixture with input tensor."""
+    return torch.randint(1, 100, (16, 100))
 
 
 @pytest.fixture(name="params")
-def fixture_params() -> EncoderDecoderTransformerParams:
-    """Test fixture with encoder/decoder transformer parameters."""
+def fixture_params() -> TransformerParams:
+    """Test fixture with transformer parameters."""
     d_model = 512
     encoder_params = EncoderDecoderParams(d_model, 2, 5, 6, 16, 0.1)
     decoder_params = EncoderDecoderParams(d_model, 3, 6, 7, 17, 0.1)
 
-    return EncoderDecoderTransformerParams(
+    return TransformerParams(
         d_model,
         200,
         1024,
@@ -32,15 +38,9 @@ def fixture_params() -> EncoderDecoderTransformerParams:
 
 
 @pytest.fixture(name="transformer")
-def fixture_transformer(params) -> EncoderDecoderTransformer:
-    """Test fixture with EncoderDecoderTransformer object."""
-    return EncoderDecoderTransformer(params)
-
-
-@pytest.fixture(name="x")
-def fixture_x() -> Tensor:
-    """Test fixture with input tensor."""
-    return torch.randint(1, 100, (16, 100))
+def fixture_transformer(params) -> Transformer:
+    """Test fixture with Transformer object."""
+    return Transformer(params)
 
 
 @pytest.fixture(name="x_cross")
@@ -49,12 +49,12 @@ def fixture_x_cross(transformer, x) -> Tensor:
     return transformer.encode(x)
 
 
-def test_encode_valid_input(params, transformer, x) -> None:
+def test_encode_valid_input(x, params, transformer) -> None:
     """Test output with valid input."""
     assert transformer.encode(x).shape == x.shape + torch.Size([params.d_model])
 
 
-def test_encode_invalid_input(transformer, x) -> None:
+def test_encode_invalid_input(x, transformer) -> None:
     """Test behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         transformer.encode(torch.ones(16, dtype=torch.int32))  # expects rank-2 tensor
@@ -62,14 +62,14 @@ def test_encode_invalid_input(transformer, x) -> None:
         transformer.encode(x.float())  # expects integer type
 
 
-def test_decode_valid_input(params, transformer, x, x_cross) -> None:
+def test_decode_valid_input(x, x_cross, params, transformer) -> None:
     """Test output with valid input."""
     assert transformer.decode(x, x_cross).shape == x.shape + torch.Size(
         [params.output_num_embeddings]
     )
 
 
-def test_decode_invalid_input(transformer, x, x_cross) -> None:
+def test_decode_invalid_input(x, x_cross, transformer) -> None:
     """Test behavior with invalid input."""
     with pytest.raises(TypeCheckError):
         transformer.decode(x, torch.ones(16, dtype=torch.int32))  # expects rank-2 tensor

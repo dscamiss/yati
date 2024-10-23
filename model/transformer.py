@@ -1,4 +1,4 @@
-"""Implementation of encoder/decoder transformer."""
+"""Implementation of transformer."""
 
 import torch
 from jaxtyping import Float, Integer, jaxtyped
@@ -9,14 +9,14 @@ from model.decoder_stack import DecoderStack
 from model.embedding import Embedding
 from model.encoder_stack import EncoderStack
 from model.positional_encoding import PositionalEncoding
-from params.encoder_decoder_transformer_params import EncoderDecoderTransformerParams
+from params.transformer_params import TransformerParams
 
 
-class EncoderDecoderTransformer(nn.Module):  # pylint: disable=abstract-method
-    """Encoder/decoder transformer.
+class Transformer(nn.Module):  # pylint: disable=abstract-method
+    """Transformer.
 
     Args:
-        params (EncoderDecoderTransformerParams): Encoder/decoder transformer parameters.
+        params (TransformerParams): Transformer parameters.
 
     Note:
         Optionally, the input embedding, output embedding, and pre-softmax layers have tied
@@ -29,7 +29,7 @@ class EncoderDecoderTransformer(nn.Module):  # pylint: disable=abstract-method
         Parameter initialization details are not specified in AIAYN.
     """
 
-    def __init__(self, params: EncoderDecoderTransformerParams) -> None:
+    def __init__(self, params: TransformerParams) -> None:
         super().__init__()
         d_model = params.d_model
         max_seq_len = params.max_seq_len
