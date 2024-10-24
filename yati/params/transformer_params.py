@@ -35,6 +35,8 @@ class TransformerParams:
         source-target vocabulary** of about 37000 tokens. For English-French, we used the
         significantly larger WMT 2014 English-French dataset consisting of 36M sentences and split
         tokens into a 32000 word-piece vocabulary [...]."
+
+    # noqa: DCO060
     """
 
     d_model: int
@@ -48,10 +50,10 @@ class TransformerParams:
     p_dropout: float
     tie_weight_matrices: bool
 
-    def __iter__(self) -> Iterator[Any]:
+    def __iter__(self) -> Iterator[Any]:  # noqa: DCO010
         return iter(astuple(self))
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> None:  # noqa: DCO010
         num_embeddings_mismatch = self.input_num_embeddings != self.output_num_embeddings
         if self.tie_weight_matrices and num_embeddings_mismatch:
             raise ValueError(

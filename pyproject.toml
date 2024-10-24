@@ -4,6 +4,7 @@ line-length = 100
 [tool.flake8]
 max-line-length = 100
 ignore = [
+    "D105",  # missing docstring in magic method
     "D107",  # missing docstring in __init__
     "F722",  # forward annotation syntax error
 ]

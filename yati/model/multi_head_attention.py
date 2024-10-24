@@ -46,7 +46,7 @@ class MultiHeadAttention(nn.Module):
 
         of size (h * d_k, d_input).
 
-        # noqa: DCO060
+    # noqa: DCO060
     """
 
     def __init__(  # noqa: DCO010

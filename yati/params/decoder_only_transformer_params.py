@@ -27,6 +27,8 @@ class DecoderOnlyTransformerParams:
     Note:
         To tie weight matrices, we need the input vocabulary size and the output vocabulary size to
         be equal.
+
+    # noqa: DCO060
     """
 
     d_model: int
@@ -38,10 +40,10 @@ class DecoderOnlyTransformerParams:
     p_dropout: float
     tie_weight_matrices: bool
 
-    def __iter__(self) -> Iterator[Any]:
+    def __iter__(self) -> Iterator[Any]:  # noqa: DCO010
         return iter(astuple(self))
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> None:  # noqa: DCO010
         num_embeddings_mismatch = self.input_num_embeddings != self.output_num_embeddings
         if self.tie_weight_matrices and num_embeddings_mismatch:
             raise ValueError(

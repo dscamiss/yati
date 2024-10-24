@@ -15,6 +15,8 @@ class EncoderDecoderParams:
         d_v (int): Number of rows in V-matrix.
         d_ff (int): Hidden layer dimension.
         p_dropout (float): Dropout probability.
+
+    # noqa: DCO060
     """
 
     d_input: int
@@ -24,5 +26,5 @@ class EncoderDecoderParams:
     d_ff: int
     p_dropout: float
 
-    def __iter__(self) -> Iterator[Any]:
+    def __iter__(self) -> Iterator[Any]:  # noqa: DCO010
         return iter(astuple(self))
