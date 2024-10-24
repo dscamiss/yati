@@ -55,6 +55,10 @@ def test_invalid_input(x, max_seq_len, positional_encoding) -> None:
         invalid_shape = list(x.shape)
         invalid_shape[1] = 2 * max_seq_len  # exceeds maximum input sequence length
         positional_encoding(torch.randn(torch.Size(invalid_shape)))
+    with pytest.raises(ValueError):
+        invalid_shape = list(x.shape)
+        invalid_shape[2] = 2 * x.shape[2]  # exceeds input dimension
+        positional_encoding(torch.randn(torch.Size(invalid_shape)))
 
 
 def test_invalid_init_arguments() -> None:
