@@ -29,7 +29,15 @@ def fixture_attention_causal_mask(x) -> MultiHeadAttention:
 
 
 def get_expected_output(attention: MultiHeadAttention, x: Tensor) -> Tensor:
-    """Helper function to compute expected output."""
+    """Compute expected output of MultiHeadAttention object.
+
+    Args:
+        attention (MultiHeadAttention): Multi-head attention object.
+        x (Tensor): Input tensor.
+
+    Returns:
+        Tensor: Final output of multi-head attention layer.
+    """
     # Get number of heads
     h = attention.h
 
