@@ -15,4 +15,4 @@ pip install -r requirements.txt
 ```
 
 # TODO
-- Add training loop examples
+- Add more training examples
