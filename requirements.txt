@@ -1,4 +1,6 @@
-datasets
-einops
-numpy
-torch
+datasets==3.0.2
+einops==0.8.0
+jaxtyping==0.2.34
+numpy==2.1.2
+torch==2.5.0
+typeguard==2.13.3
