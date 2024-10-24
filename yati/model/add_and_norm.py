@@ -12,7 +12,7 @@ class AddAndNorm(nn.Module):
         d_input (int): Input dimension.
     """
 
-    def __init__(self, d_input: int) -> None:
+    def __init__(self, d_input: int) -> None:  # noqa: DCO010
         super().__init__()
         self._layer_norm = nn.LayerNorm(d_input)
 
@@ -25,5 +25,8 @@ class AddAndNorm(nn.Module):
         Args:
             x (Tensor): Input tensor for first summand.
             y (Tensor): Input tensor for second summand.
+
+        Returns:
+            Tensor: Final output of add-and-norm layer.
         """
         return self._layer_norm(x + y)

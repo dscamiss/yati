@@ -3,7 +3,10 @@ line-length = 100
 
 [tool.flake8]
 max-line-length = 100
-ignore = ["F722"]
+ignore = [
+    "D107",  # missing docstring in __init__
+    "F722",  # forward annotation syntax error
+]
 
 [tool.isort]
 profile = "black"

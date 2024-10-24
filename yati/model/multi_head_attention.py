@@ -45,9 +45,11 @@ class MultiHeadAttention(nn.Module):
             ]
 
         of size (h * d_k, d_input).
+
+        # noqa: DCO060
     """
 
-    def __init__(
+    def __init__(  # noqa: DCO010
         self,
         d_input: int,
         h: int,
@@ -88,9 +90,12 @@ class MultiHeadAttention(nn.Module):
         """Compute multi-head attention output.
 
         Args:
-            q (Tensor): Input tensor for "query".
-            k (Tensor): Input tensor for "key".
-            v (Tensor): Input tensor for "value".
+            q (Tensor): Input tensor for "query" argument.
+            k (Tensor): Input tensor for "key" argument.
+            v (Tensor): Input tensor for "value" argument.
+
+        Returns:
+            Tensor: Final output of multi-head attention layer.
         """
         q = self._w_q(q)  # (b, n, h * d_k)
         k = self._w_k(k)  # (b, n, h * d_k)
@@ -130,6 +135,12 @@ class MultiHeadAttention(nn.Module):
         """Getter for h."""
         return self._h
 
+    # flake8: noqa
     def get_weights(self) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
         """Getter for weight matrices in Linear layers."""
-        return (self._w_q.weight, self._w_k.weight, self._w_v.weight, self._w_o.weight)
+        return (
+            self._w_q.weight,
+            self._w_k.weight,
+            self._w_v.weight,
+            self._w_o.weight,
+        )

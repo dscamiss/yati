@@ -22,7 +22,7 @@ class FeedForward(nn.Module):
         multi-head attention, (2) multi-head attention, and (3) feed-forward.
     """
 
-    def __init__(self, d_input: int, d_ff: int) -> None:
+    def __init__(self, d_input: int, d_ff: int) -> None:  # noqa: DCO010
         super().__init__()
         self.affine_1 = nn.Linear(d_input, d_ff, bias=True)
         self.affine_2 = nn.Linear(d_ff, d_input, bias=True)
@@ -33,7 +33,12 @@ class FeedForward(nn.Module):
 
         Args:
             x (Tensor): Input tensor.
+
+        Returns:
+            Tensor: Final output of feed-forward layer.
         """
         x = self.affine_1(x)  # (b, n, d_ff)
         x = torch.relu(x)  # (b, n, d_ff)
-        return self.affine_2(x)  # (b, n, d_input)
+        x = self.affine_2(x)  # (b, n, d_input)
+
+        return x

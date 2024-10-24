@@ -25,7 +25,7 @@ class Encoder(nn.Module):
         Following AIAYN, causal masking is not applied in sub-layer 1.
     """
 
-    def __init__(self, params: EncoderDecoderParams) -> None:
+    def __init__(self, params: EncoderDecoderParams) -> None:  # noqa: DCO010
         super().__init__()
         d_input, h, d_k, d_v, d_ff, p_dropout = params
 
@@ -45,6 +45,9 @@ class Encoder(nn.Module):
 
         Args:
             x (Tensor): Input tensor.
+
+        Returns:
+            Tensor: Final output of encoder layer.
         """
         # Compute sub-layer 1 output
         y = self._multi_head_attention(x, x, x)  # (b, n, d_input)
@@ -67,7 +70,7 @@ class EncoderStack(nn.Module):
         params (EncoderDecoderParams): Encoder parameters.
     """
 
-    def __init__(self, num_layers: int, params: EncoderDecoderParams) -> None:
+    def __init__(self, num_layers: int, params: EncoderDecoderParams) -> None:  # noqa: DCO010
         super().__init__()
         self._layers = nn.ModuleList([Encoder(params) for _ in range(num_layers)])
 
@@ -77,6 +80,9 @@ class EncoderStack(nn.Module):
 
         Args:
             x (Tensor): Input tensor.
+
+        Returns:
+            Tensor: Final output of encoder stack.
         """
         for layer in self._layers:
             x = layer(x)  # (b, n, d_input)

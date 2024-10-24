@@ -1,6 +1,5 @@
 """Implementation of decoder-only transformer."""
 
-import torch
 from jaxtyping import Float, Integer, jaxtyped
 from torch import Tensor, nn
 from typeguard import typechecked as typechecker
@@ -24,7 +23,7 @@ class DecoderOnlyTransformer(nn.Module):  # pylint: disable=abstract-method
         All parameters are initialized using Xavier/Glorot initialization, with PyTorch defaults.
     """
 
-    def __init__(self, params: DecoderOnlyTransformerParams) -> None:
+    def __init__(self, params: DecoderOnlyTransformerParams) -> None:  # noqa: DCO010
         super().__init__()
         d_model = params.d_model
         max_seq_len = params.max_seq_len
@@ -57,12 +56,17 @@ class DecoderOnlyTransformer(nn.Module):  # pylint: disable=abstract-method
 
         Args:
             x (Tensor): Input tensor.
+
+        Returns:
+            Tensor: Final output of decoder-only transformer.
+
+        Note:
+            Softmax is not applied, since cross_entropy_loss() expects logits.
         """
         x = self._input_embedding(x)  # (b, n, d_model)
         x = self._input_positional_encoding(x)  # (b, n, d_model)
         x = self._input_positional_encoding_dropout(x)  # (b, n, d_model)
         x = self._decoder_stack(x)  # (b, n, d_model)
         x = self._pre_softmax(x)  # (b, n, output_num_embeddings)
-        x = torch.softmax(x, dim=-1)  # (b, n, output_num_embeddings)
 
         return x

@@ -28,7 +28,7 @@ class PositionalEncoding(nn.Module):
         Here, pos is the input sequence index and i is the input component index.
     """
 
-    def __init__(self, d_input: int, max_seq_len: int) -> None:
+    def __init__(self, d_input: int, max_seq_len: int) -> None:  # noqa: DCO010
         super().__init__()
         # Sanity check: d_input must be divisible by 2
         if d_input % 2 != 0:
@@ -57,7 +57,13 @@ class PositionalEncoding(nn.Module):
 
         Args:
             x (Tensor): Input tensor.
+
+        Raises:
+            ValueError: If input x has an invalid shape.
+
+        Returns:
+            Tensor: Final output of positional encoding layer.
         """
-        if x.shape[1] > self.encoding.shape[1]:
+        if x.shape[1] > self.encoding.shape[1] or x.shape[2] != self.encoding.shape[2]:
             raise ValueError(f"x has invalid shape {x.shape}")
         return x + self.encoding[:, : x.shape[1], :].requires_grad_(False)

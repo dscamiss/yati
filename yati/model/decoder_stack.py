@@ -27,7 +27,7 @@ class Decoder(nn.Module):
         in sub-layer 2.
     """
 
-    def __init__(self, params: EncoderDecoderParams, max_seq_len: int) -> None:
+    def __init__(self, params: EncoderDecoderParams, max_seq_len: int) -> None:  # noqa: DCO010
         super().__init__()
         d_input, h, d_k, d_v, d_ff, p_dropout = params
 
@@ -57,6 +57,9 @@ class Decoder(nn.Module):
         Args:
             x (Tensor): Input tensor.
             x_cross (Tensor): Cross-attention input tensor.
+
+        Returns:
+            Tensor: Final output of decoder layer.
         """
         # Compute sub-layer 1 output
         y = self._multi_head_attention_1(x, x, x)  # (b, n, d_input)
@@ -91,7 +94,9 @@ class DecoderStack(nn.Module):
         used as the cross-attention input in each decoder block.
     """
 
-    def __init__(self, num_layers: int, params: EncoderDecoderParams, max_seq_len: int) -> None:
+    def __init__(  # noqa: DCO010
+        self, num_layers: int, params: EncoderDecoderParams, max_seq_len: int
+    ) -> None:
         super().__init__()
         self._layers = nn.ModuleList([Decoder(params, max_seq_len) for _ in range(num_layers)])
 
@@ -106,6 +111,9 @@ class DecoderStack(nn.Module):
         Args:
             x (Tensor): Input tensor.
             x_cross (Tensor): Cross-attention input tensor.
+
+        Returns:
+            Tensor: Final output of decoder stack.
         """
         for layer in self._layers:
             x = layer(x, x_cross)  # (b, n, d_input)

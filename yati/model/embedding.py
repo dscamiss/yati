@@ -15,7 +15,7 @@ class Embedding(nn.Module):
         num_embeddings (int): Vocabulary size.
     """
 
-    def __init__(self, d_model: int, num_embeddings: int) -> None:
+    def __init__(self, d_model: int, num_embeddings: int) -> None:  # noqa: DCO010
         super().__init__()
         self._embedding = nn.Embedding(num_embeddings, d_model)
         self._scaling_factor = math.sqrt(d_model)
@@ -35,5 +35,8 @@ class Embedding(nn.Module):
             [...] In our model, we share the same weight matrix between the two embedding layers
             and the pre-softmax linear transformation, similar to [30]. In the embedding layers,
             we multiply those weights by sqrt(d_model)."
+
+        Returns:
+            Tensor: Final output of embedding layer.
         """
         return self._scaling_factor * self._embedding(x)

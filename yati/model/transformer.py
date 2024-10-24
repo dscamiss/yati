@@ -1,6 +1,5 @@
 """Implementation of transformer."""
 
-import torch
 from jaxtyping import Float, Integer, jaxtyped
 from torch import Tensor, nn
 from typeguard import typechecked as typechecker
@@ -29,7 +28,7 @@ class Transformer(nn.Module):  # pylint: disable=abstract-method
         Parameter initialization details are not specified in AIAYN.
     """
 
-    def __init__(self, params: TransformerParams) -> None:
+    def __init__(self, params: TransformerParams) -> None:  # noqa: DCO010
         super().__init__()
         d_model = params.d_model
         max_seq_len = params.max_seq_len
@@ -73,6 +72,9 @@ class Transformer(nn.Module):  # pylint: disable=abstract-method
         Args:
             x (Tensor): Input tensor.
 
+        Returns:
+            Tensor: Final output of encoder side of transformer.
+
         Note:
             Dropout is applied to the output of the positional encoding block, following this
             remark from AIAYN: "In addition, we apply dropout to the sums of the embeddings and
@@ -94,12 +96,17 @@ class Transformer(nn.Module):  # pylint: disable=abstract-method
         Args:
             x (Tensor): Input tensor.
             x_cross (Tensor): Cross-attention input tensor.
+
+        Returns:
+            Tensor: Final output of decoder side of transformer.
+
+        Note:
+            Softmax is not applied, since cross_entropy_loss() expects logits.
         """
         x = self._output_embedding(x)  # (b, n, d_model)
         x = self._output_positional_encoding(x)  # (b, n, d_model)
         x = self._output_positional_encoding_dropout(x)  # (b, n, d_model)
         x = self._decoder_stack(x, x_cross)  # (b, n, d_model)
         x = self._pre_softmax(x)  # (b, n, output_num_embeddings)
-        x = torch.softmax(x, dim=-1)  # (b, n, output_num_embeddings)
 
         return x
