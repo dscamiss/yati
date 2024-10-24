@@ -36,7 +36,7 @@ def get_expected_output(attention: MultiHeadAttention, x: Tensor) -> Tensor:
         x (Tensor): Input tensor.
 
     Returns:
-        Tensor: Final output of multi-head attention layer.
+        Tensor: Final output of attention.
     """
     # Get number of heads
     h = attention.h
