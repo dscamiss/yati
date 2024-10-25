@@ -29,3 +29,6 @@ See `examples` directory.
 
 # TODO
 - Add more training examples
+
+# Related projects
+- Part 1 of the [Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/).
