@@ -1,6 +1,7 @@
 datasets==3.0.2
 einops==0.8.0
 jaxtyping==0.2.34
-numpy==2.1.2
+numpy==2.0.2; python_version <= "3.9"
+numpy==2.1.2; python_version >= "3.10"
 torch==2.5.0
 typeguard==2.13.3
