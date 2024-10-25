@@ -20,7 +20,7 @@ uv pip install .
 ## Using `pip`
 ```shell
 git clone https://github.com/dscamiss/yati && cd yati
-pip install -r requirements.txt
+pip install -r requirements.txt .
 ```
 
 # Example usage
