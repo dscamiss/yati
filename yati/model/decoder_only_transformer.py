@@ -27,22 +27,24 @@ class DecoderOnlyTransformer(nn.Module):  # pylint: disable=abstract-method
         super().__init__()
         d_model = params.d_model
         max_seq_len = params.max_seq_len
-        p_dropout = params.p_dropout
         input_num_embeddings = params.input_num_embeddings
         output_num_embeddings = params.output_num_embeddings
         decoder_stack_num_layers = params.decoder_stack_num_layers
         decoder_params = params.decoder_params
+        p_dropout = params.p_dropout
+        tie_weight_matrices = params.tie_weight_matrices
+        apply_causal_mask = params.apply_causal_mask
 
         self._input_embedding = Embedding(d_model, input_num_embeddings)
         self._input_positional_encoding = PositionalEncoding(d_model, max_seq_len)
         self._input_positional_encoding_dropout = nn.Dropout(p_dropout)
         self._decoder_stack = ReducedDecoderStack(
-            decoder_stack_num_layers, decoder_params, max_seq_len
+            decoder_stack_num_layers, decoder_params, apply_causal_mask, max_seq_len
         )
         self._pre_softmax = nn.Linear(d_model, output_num_embeddings)
 
         # Tie weight matrices, if needed
-        if params.tie_weight_matrices:
+        if tie_weight_matrices:
             self._pre_softmax.weight = self._input_embedding.embedding.weight
 
         # Initialize parameters

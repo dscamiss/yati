@@ -31,6 +31,7 @@ def fixture_params() -> DecoderOnlyTransformerParams:
         decoder_params,
         0.1,
         False,
+        True,
     )
 
 

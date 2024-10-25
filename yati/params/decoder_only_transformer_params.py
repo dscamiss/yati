@@ -19,6 +19,7 @@ class DecoderOnlyTransformerParams:
         decoder_params (EncoderDecoderParams): Decoder layer parameters.
         p_dropout (float): Dropout probability; used in positional encoding layer.
         tie_weight_matrices (bool): Tie weight matrices in input embedding and pre-softmax layers.
+        apply_causal_mask (bool): Apply causal mask in each decoder layer.
 
     Raises:
         ValueError: If tie_weight_matrices is True and there is a mismatch between the input and
@@ -39,6 +40,7 @@ class DecoderOnlyTransformerParams:
     decoder_params: EncoderDecoderParams
     p_dropout: float
     tie_weight_matrices: bool
+    apply_causal_mask: bool
 
     def __iter__(self) -> Iterator[Any]:  # noqa: DCO010
         return iter(astuple(self))

@@ -30,13 +30,13 @@ def fixture_max_seq_len() -> int:
 @pytest.fixture(name="reduced_decoder")
 def fixture_reduced_decoder(params, max_seq_len) -> ReducedDecoder:
     """Test fixture with ReducedDecoder object."""
-    return ReducedDecoder(params, max_seq_len)
+    return ReducedDecoder(params, True, max_seq_len)
 
 
 @pytest.fixture(name="reduced_decoder_stack")
 def fixture_reduced_decoder_stack(params, max_seq_len) -> ReducedDecoderStack:
     """Test fixture with ReducedDecoderStack object."""
-    return ReducedDecoderStack(6, params, max_seq_len)
+    return ReducedDecoderStack(6, params, True, max_seq_len)
 
 
 def test_reduced_decoder_valid_input(x, reduced_decoder) -> None:

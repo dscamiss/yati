@@ -15,6 +15,7 @@ class ReducedDecoder(nn.Module):
 
     Args:
         params (EncoderDecoderParams): Decoder layer parameters.
+        apply_causal_mask (bool): Apply causal mask.
         max_seq_len (int): Maximum input sequence length.
 
     Note:
@@ -23,12 +24,16 @@ class ReducedDecoder(nn.Module):
         identical to the "full" decoder layer.
     """
 
-    def __init__(self, params: EncoderDecoderParams, max_seq_len: int) -> None:  # noqa: DCO010
+    def __init__(  # noqa: DCO010
+        self, params: EncoderDecoderParams, apply_causal_mask: bool, max_seq_len: int
+    ) -> None:
         super().__init__()
         d_input, h, d_k, d_v, d_ff, p_dropout = params
 
         # Sub-layer 1 objects
-        self._multi_head_attention_1 = MultiHeadAttention(d_input, h, d_k, d_v, True, max_seq_len)
+        self._multi_head_attention_1 = MultiHeadAttention(
+            d_input, h, d_k, d_v, apply_causal_mask, max_seq_len
+        )
         self._multi_head_attention_dropout_1 = nn.Dropout(p_dropout)
         self._multi_head_attention_add_and_norm_1 = AddAndNorm(d_input)
 
@@ -66,15 +71,20 @@ class ReducedDecoderStack(nn.Module):
     Args:
         num_layers (int): Number of decoder layers.
         params (EncoderDecoderParams): Decoder parameters.
+        apply_causal_mask (bool): Apply causal mask in each decoder layer.
         max_seq_len (int): Maximum input sequence length.
     """
 
     def __init__(  # noqa: DCO010
-        self, num_layers: int, params: EncoderDecoderParams, max_seq_len: int
+        self,
+        num_layers: int,
+        params: EncoderDecoderParams,
+        apply_causal_mask: bool,
+        max_seq_len: int,
     ) -> None:
         super().__init__()
         self._layers = nn.ModuleList(
-            [ReducedDecoder(params, max_seq_len) for _ in range(num_layers)]
+            [ReducedDecoder(params, apply_causal_mask, max_seq_len) for _ in range(num_layers)]
         )
 
     @jaxtyped(typechecker=typechecker)
