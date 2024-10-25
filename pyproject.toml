@@ -1,19 +1,15 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools >= 62.6"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "yati"
 version = "0.0.1"
-dependencies = [
-    "datasets",
-    "einops",
-    "jaxtyping",
-    "numpy",
-    "torch",
-    "typeguard",
-]
+dynamic = ["dependencies"]
 requires-python = ">= 3.9"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 [tool.black]
 line-length = 100
