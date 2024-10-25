@@ -18,7 +18,7 @@ uv pip install .
 
 # Example usage
 
-See `examples`.
+See `examples` directory.
 
 # TODO
 - Add more training examples
