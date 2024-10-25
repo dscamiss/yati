@@ -111,15 +111,7 @@ def main():
         # Save model checkpoint after each epoch
         if save_model:
             print(f"epoch={epoch}, saving model checkpoint to {save_filename}")
-            torch.save(
-                {
-                    "epoch": epoch,
-                    "model_state_dict": transformer.state_dict(),
-                    "optimizer_state_dict": optimizer.state_dict(),
-                    "loss": loss.item(),
-                },
-                save_filename,
-            )
+            torch.save(transformer, save_filename)
 
 
 if __name__ == "__main__":
