@@ -14,12 +14,12 @@ class Encoder(nn.Module):
     """Encoder layer.
 
     Args:
-        params (EncoderDecoderParams): Encoder parameters.
+        params: Encoder parameters.
 
     Note:
-        Regarding the placement of the dropout layers, we follow the remark in AIAYN
-        which states: "We apply dropout [33] to the output of each sub-layer, before
-        it is added to the sub-layer input and normalized."
+        Regarding the placement of the dropout layers, we follow the remark in
+        AIAYN which states: "We apply dropout [33] to the output of each
+        sub-layer, before it is added to the sub-layer input and normalized."
 
     Note:
         Following AIAYN, causal masking is not applied in sub-layer 1.
@@ -44,7 +44,7 @@ class Encoder(nn.Module):
         """Compute encoder output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Returns:
             Tensor: Final output of encoder layer.
@@ -66,8 +66,8 @@ class EncoderStack(nn.Module):
     """Encoder stack.
 
     Args:
-        num_layers (int): Number of encoder layers.
-        params (EncoderDecoderParams): Encoder parameters.
+        num_layers: Number of encoder layers.
+        params: Encoder parameters.
     """
 
     def __init__(self, num_layers: int, params: EncoderDecoderParams) -> None:  # noqa: DCO010
@@ -79,7 +79,7 @@ class EncoderStack(nn.Module):
         """Compute encoder stack output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Returns:
             Tensor: Final output of encoder stack.

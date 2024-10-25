@@ -10,15 +10,16 @@ class FeedForward(nn.Module):
     """Feed-forward layer.
 
     Args:
-        d_input (int): Input (and output) dimension.
-        d_ff (int): Hidden layer dimension.
+        d_input: Input/output dimension.
+        d_ff: Hidden layer dimension.
 
     Note:
-        This does not apply dropout after the first affine transformation.  This is because
-        in AIAYN, the authors write "We apply dropout [33] to the output of each sub-layer,
-        before it is added to the sub-layer input and normalized."  In the paper, "sub-layer"
-        has the following meaning: In an encoder layer, the sub-layers are (1) multi-head
-        attention and (2) feed-forward.  In a decoder layer, the sub-layers are (1) masked
+        This does not apply dropout after the first affine transformation.
+        This is because in AIAYN, the authors write "We apply dropout [33] to
+        the output of each sub-layer, before it is added to the sub-layer input
+        and normalized."  In the paper, "sub-layer" has the following meaning:
+        In an encoder layer, the sub-layers are (1) multi-head attention and
+        (2) feed-forward.  In a decoder layer, the sub-layers are (1) masked
         multi-head attention, (2) multi-head attention, and (3) feed-forward.
     """
 
@@ -32,7 +33,7 @@ class FeedForward(nn.Module):
         """Compute feed-forward output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Returns:
             Tensor: Final output of feed-forward layer.

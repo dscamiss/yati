@@ -12,8 +12,8 @@ class PositionalEncoding(nn.Module):
     """Positional encoding layer.
 
     Args:
-        d_input (int): Input dimension, must be divisible by 2.
-        max_seq_len (int): Maximum input sequence length.
+        d_input: Input dimension.  Must be divisible by 2.
+        max_seq_len: Maximum input sequence length.
 
     Raises:
         ValueError: If d_input is not divisible by 2.
@@ -25,7 +25,7 @@ class PositionalEncoding(nn.Module):
             PE(pos, 2i + 1) = cos(pos / 10000^(2i / d_input))
                                                ^^ Note 2i used in both cases
 
-        Here, pos is the input sequence index and i is the input component index.
+        Here, pos is the input sequence index and i is the component index.
     """
 
     def __init__(self, d_input: int, max_seq_len: int) -> None:  # noqa: DCO010
@@ -56,10 +56,11 @@ class PositionalEncoding(nn.Module):
         Compute positional encoding output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Raises:
-            ValueError: If input x has an invalid shape.
+            ValueError: If input x has an invalid shape (i.e., its shape is not
+                compatible with the pre-computed positional encoding).
 
         Returns:
             Tensor: Final output of positional encoding layer.

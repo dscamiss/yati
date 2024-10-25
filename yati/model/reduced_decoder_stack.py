@@ -14,14 +14,14 @@ class ReducedDecoder(nn.Module):
     """Reduced decoder layer.
 
     Args:
-        params (EncoderDecoderParams): Decoder layer parameters.
-        apply_causal_mask (bool): Apply causal mask.
-        max_seq_len (int): Maximum input sequence length.
+        params: Decoder layer parameters.
+        apply_causal_mask: Apply causal mask.
+        max_seq_len: Maximum input sequence length.
 
     Note:
-        This is a "reduced" decoder layer in the sense that it has no sub-layer 2
-        (and therefore no cross-attention input).  In all other respects, it is
-        identical to the "full" decoder layer.
+        This is a "reduced" decoder layer in the sense that it has no sub-layer
+        2 (and therefore no cross-attention input).  In all other respects, it
+        is identical to the "full" decoder layer.
     """
 
     def __init__(  # noqa: DCO010
@@ -47,7 +47,7 @@ class ReducedDecoder(nn.Module):
         """Compute reduced decoder output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Returns:
             Tensor: Final output of reduced decoder layer.
@@ -69,10 +69,10 @@ class ReducedDecoderStack(nn.Module):
     """Reduced decoder stack.
 
     Args:
-        num_layers (int): Number of decoder layers.
-        params (EncoderDecoderParams): Decoder parameters.
-        apply_causal_mask (bool): Apply causal mask in each decoder layer.
-        max_seq_len (int): Maximum input sequence length.
+        num_layers: Number of decoder layers.
+        params: Decoder parameters.
+        apply_causal_mask: Apply causal mask in each decoder layer.
+        max_seq_len: Maximum input sequence length.
     """
 
     def __init__(  # noqa: DCO010
@@ -92,7 +92,7 @@ class ReducedDecoderStack(nn.Module):
         """Compute reduced decoder stack output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Returns:
             Tensor: Final output of reduced decoder stack.

@@ -14,13 +14,13 @@ class MultiHeadAttention(nn.Module):
     """Multi-head attention layer.
 
     Args:
-        d_input (int): Input dimension.
-        h (int): Number of heads.
-        d_k (int): Number of rows in {Q, K}-matrices.
-        d_v (int): Number of rows in V-matrix.
-        apply_causal_mask (bool): Apply causal mask (default = False).
-        max_seq_len (int): Maximum input sequence length.  This is
-            only used when apply_causal_mask is True (default = -1).
+        d_input: Input dimension.
+        h: Number of heads.
+        d_k: Number of rows in "Q" and "K" matrices.
+        d_v: Number of rows in "V" matrix.
+        apply_causal_mask: Apply causal mask (default = False).
+        max_seq_len: Maximum input sequence length (default = -1).  This
+            argument is only used when apply_causal_mask is True.
 
     Raises:
         ValueError: If apply_causal_mask is True and max_seq_len <= 0.
@@ -33,9 +33,9 @@ class MultiHeadAttention(nn.Module):
 
         For example, instead of separately maintaining
 
-            W_1^Q, W_2^Q, ..., W_h^Q
+            W_1^Q, W_2^Q, ..., W_h^Q,
 
-        of size (d_k, d_input), we maintain the block matrix
+        each of size (d_k, d_input), we maintain the block matrix
 
             W^Q = [
                 W_1^Q
@@ -90,9 +90,9 @@ class MultiHeadAttention(nn.Module):
         """Compute multi-head attention output.
 
         Args:
-            q (Tensor): Input tensor for "query" argument.
-            k (Tensor): Input tensor for "key" argument.
-            v (Tensor): Input tensor for "value" argument.
+            q: Input tensor for "query" argument.
+            k: Input tensor for "key" argument.
+            v: Input tensor for "value" argument.
 
         Returns:
             Tensor: Final output of multi-head attention layer.

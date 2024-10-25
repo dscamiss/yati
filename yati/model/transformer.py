@@ -15,17 +15,17 @@ class Transformer(nn.Module):  # pylint: disable=abstract-method
     """Transformer.
 
     Args:
-        params (TransformerParams): Transformer parameters.
+        params: Transformer parameters.
 
     Note:
-        Optionally, the input embedding, output embedding, and pre-softmax layers have tied
-        weight matrices, following this remark from AIAYN: "In our model, we share the same
-        weight matrix between the two embedding layers and the pre-softmax linear
-        transformation [...]."
+        Optionally, the input embedding, output embedding, and pre-softmax
+        layers have tied weight matrices, following this remark from AIAYN:
+        "In our model, we share the same weight matrix between the two
+        embedding layers and the pre-softmax linear transformation [...]."
 
     Note:
-        All parameters are initialized using Xavier/Glorot initialization, with PyTorch defaults.
-        Parameter initialization details are not specified in AIAYN.
+        All parameters are initialized using Xavier/Glorot initialization,
+        with PyTorch defaults.  AIAYN does not have initialization details.
     """
 
     def __init__(self, params: TransformerParams) -> None:  # noqa: DCO010
@@ -70,15 +70,16 @@ class Transformer(nn.Module):  # pylint: disable=abstract-method
         """Compute encoder-side output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Returns:
             Tensor: Final output of encoder side of transformer.
 
         Note:
-            Dropout is applied to the output of the positional encoding block, following this
-            remark from AIAYN: "In addition, we apply dropout to the sums of the embeddings and
-            the positional encodings in both the encoder and decoder stacks."
+            Dropout is applied to the output of the positional encoding block,
+            following this remark from AIAYN: "In addition, we apply dropout to
+            the sums of the embeddings and the positional encodings in both the
+            encoder and decoder stacks."
         """
         x = self._input_embedding(x)  # (b, n, d_model)
         x = self._input_positional_encoding(x)  # (b, n, d_model)
@@ -94,14 +95,20 @@ class Transformer(nn.Module):  # pylint: disable=abstract-method
         """Compute decoder-side output.
 
         Args:
-            x (Tensor): Input tensor.
-            x_cross (Tensor): Cross-attention input tensor.
+            x: Input tensor.
+            x_cross: Cross-attention input tensor.
 
         Returns:
             Tensor: Final output of decoder side of transformer.
 
         Note:
-            Softmax is not applied, since cross_entropy_loss() expects logits.
+            Dropout is applied to the output of the positional encoding block,
+            following this remark from AIAYN: "In addition, we apply dropout to
+            the sums of the embeddings and the positional encodings in both the
+            encoder and decoder stacks."
+
+        Note:
+            Softmax is not applied, since cross_entropy() expects logits.
         """
         x = self._output_embedding(x)  # (b, n, d_model)
         x = self._output_positional_encoding(x)  # (b, n, d_model)

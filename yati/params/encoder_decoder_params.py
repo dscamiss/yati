@@ -9,12 +9,12 @@ class EncoderDecoderParams:
     """Dataclass for encoder/decoder layer parameters.
 
     Args:
-        d_input (int): Input dimension.
-        h (int): Number of heads.
-        d_k (int): Number of rows in {Q, K}-matrices.
-        d_v (int): Number of rows in V-matrix.
-        d_ff (int): Hidden layer dimension.
-        p_dropout (float): Dropout probability.
+        d_input: Input dimension.
+        h: Number of heads.
+        d_k: Number of rows in "Q" and "K" matrices.
+        d_v: Number of rows in "V" matrix.
+        d_ff: Hidden layer dimension.
+        p_dropout: Dropout probability for sub-layers.
 
     # noqa: DCO060
     """

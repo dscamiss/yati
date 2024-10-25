@@ -11,8 +11,8 @@ class Embedding(nn.Module):
     """Embedding layer.
 
     Args:
-        d_model (int): Embedding dimension.
-        num_embeddings (int): Vocabulary size.
+        d_model: Embedding dimension.
+        num_embeddings: Vocabulary size.
     """
 
     def __init__(self, d_model: int, num_embeddings: int) -> None:  # noqa: DCO010
@@ -25,16 +25,18 @@ class Embedding(nn.Module):
         """Compute embedding output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Note:
-            Multiplying the embedding output by scaling_factor should have the same effect
-            as multiplying the embedding layer's weight matrix by scaling_factor.  From AIAYN:
-            "Similarly to other sequence transduction models, we use learned embeddings
-            to convert the input tokens and output tokens to vectors of dimension d_model.
-            [...] In our model, we share the same weight matrix between the two embedding layers
-            and the pre-softmax linear transformation, similar to [30]. In the embedding layers,
-            we multiply those weights by sqrt(d_model)."
+            Multiplying the embedding output by scaling_factor should have the
+            same effect as multiplying the embedding layer's weight matrix by
+            scaling_factor.  From AIAYN: "Similarly to other sequence
+            transduction models, we use learned embeddings to convert the input
+            tokens and output tokens to vectors of dimension d_model. [...] In
+            our model, we share the same weight matrix between the two
+            embedding layers and the pre-softmax linear transformation, similar
+            to [30]. In the embedding layers, we multiply those weights by
+            sqrt(d_model)."
 
         Returns:
             Tensor: Final output of embedding layer.

@@ -11,30 +11,21 @@ class TransformerParams:
     """Dataclass for transformer parameters.
 
     Args:
-        d_model (int): Input/output embedding dimension.
-        max_seq_len (int): Maximum input sequence length.
-        input_num_embeddings (int): Input vocabulary size.
-        output_num_embeddings (int): Output vocabulary size.
-        encoder_stack_num_layers (int): Number of encoder layers in encoder stack.
-        encoder_params (EncoderDecoderParams): Encoder layer parameters.
-        decoder_stack_num_layers (int): Number of decoder layers in decoder stack.
-        decoder_params (EncoderDecoderParams): Decoder layer parameters.
-        p_dropout (float): Dropout probability; used in positional encoding layers.
-        tie_weight_matrices (bool): Tie weight matrices in input embedding, output
+        d_model: Input/output embedding dimension.
+        max_seq_len: Maximum input sequence length.
+        input_num_embeddings: Input vocabulary size.
+        output_num_embeddings: Output vocabulary size.
+        encoder_stack_num_layers: Number of encoder layers in encoder stack.
+        encoder_params: Encoder layer parameters.
+        decoder_stack_num_layers: Number of decoder layers in decoder stack.
+        decoder_params: Decoder layer parameters.
+        p_dropout: Dropout probability for positional encoding layers.
+        tie_weight_matrices: Tie weight matrices in input embedding, output
             embedding, and pre-softmax layers.
 
     Raises:
-        ValueError: If tie_weight_matrices is True and there is a mismatch between the input and
-            output vocabulary sizes.
-
-    Note:
-        To tie weight matrices, we need the input vocabulary size and the output vocabulary size to
-        be equal.  This seems to be the case in the data used in AIAYN, based on this remark:
-        "We trained on the standard WMT 2014 English-German dataset consisting of about 4.5 million
-        sentence pairs. Sentences were encoded using byte-pair encoding [3], which has a **shared
-        source-target vocabulary** of about 37000 tokens. For English-French, we used the
-        significantly larger WMT 2014 English-French dataset consisting of 36M sentences and split
-        tokens into a 32000 word-piece vocabulary [...]."
+        ValueError: If tie_weight_matrices is True and there is a mismatch
+            between the input and output vocabulary sizes.
 
     # noqa: DCO060
     """

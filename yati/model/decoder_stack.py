@@ -14,17 +14,17 @@ class Decoder(nn.Module):
     """Decoder layer.
 
     Args:
-        params (EncoderDecoderParams): Decoder layer parameters.
-        max_seq_len (int): Maximum input sequence length.
+        params: Decoder layer parameters.
+        max_seq_len: Maximum input sequence length.
 
     Note:
-        Regarding the placement of the dropout layers, we follow the remark in AIAYN
-        which states: "We apply dropout [33] to the output of each sub-layer, before
-        it is added to the sub-layer input and normalized."
+        Regarding the placement of the dropout layers, we follow the remark in
+        AIAYN which states: "We apply dropout [33] to the output of each
+        sub-layer, before it is added to the sub-layer input and normalized."
 
     Note:
-        Following AIAYN, causal masking is applied in sub-layer 1, and is not applied
-        in sub-layer 2.
+        Following AIAYN, causal masking is applied in sub-layer 1, and is not
+        applied in sub-layer 2.
     """
 
     def __init__(self, params: EncoderDecoderParams, max_seq_len: int) -> None:  # noqa: DCO010
@@ -55,8 +55,8 @@ class Decoder(nn.Module):
         """Compute decoder output.
 
         Args:
-            x (Tensor): Input tensor.
-            x_cross (Tensor): Cross-attention input tensor.
+            x: Input tensor.
+            x_cross: Cross-attention input tensor.
 
         Returns:
             Tensor: Final output of decoder layer.
@@ -83,15 +83,16 @@ class DecoderStack(nn.Module):
     """Decoder stack.
 
     Args:
-        num_layers (int): Number of decoder layers.
-        params (EncoderDecoderParams): Decoder parameters.
-        max_seq_len (int): Maximum input sequence length.
+        num_layers: Number of decoder layers.
+        params: Decoder parameters.
+        max_seq_len: Maximum input sequence length.
 
     Note:
-        Regarding the use of the encoder stack output, we refer to the remark in AIAYN which
-        states "the decoder inserts a third sub-layer, which performs multi-head attention
-        over the output of the encoder stack."  In other words, the encoder stack output is
-        used as the cross-attention input in each decoder block.
+        Regarding the use of the encoder stack output, we refer to the remark
+        in AIAYN which states "the decoder inserts a third sub-layer, which
+        performs multi-head attention over the output of the encoder stack."
+        In other words, the encoder stack output is used as the cross-attention
+        input in each decoder layer.
     """
 
     def __init__(  # noqa: DCO010
@@ -109,8 +110,8 @@ class DecoderStack(nn.Module):
         """Compute decoder stack output.
 
         Args:
-            x (Tensor): Input tensor.
-            x_cross (Tensor): Cross-attention input tensor.
+            x: Input tensor.
+            x_cross: Cross-attention input tensor.
 
         Returns:
             Tensor: Final output of decoder stack.

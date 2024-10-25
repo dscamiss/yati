@@ -11,23 +11,20 @@ class DecoderOnlyTransformerParams:
     """Dataclass for decoder-only transformer parameters.
 
     Args:
-        d_model (int): Input/output embedding dimension.
-        max_seq_len (int): Maximum input sequence length.
-        input_num_embeddings (int): Input vocabulary size.
-        output_num_embeddings (int): Output vocabulary size.
-        decoder_stack_num_layers (int): Number of decoder layers in decoder stack.
-        decoder_params (EncoderDecoderParams): Decoder layer parameters.
-        p_dropout (float): Dropout probability; used in positional encoding layer.
-        tie_weight_matrices (bool): Tie weight matrices in input embedding and pre-softmax layers.
-        apply_causal_mask (bool): Apply causal mask in each decoder layer.
+        d_model: Input/output embedding dimension.
+        max_seq_len: Maximum input sequence length.
+        input_num_embeddings: Input vocabulary size.
+        output_num_embeddings: Output vocabulary size.
+        decoder_stack_num_layers: Number of decoder layers in decoder stack.
+        decoder_params: Decoder layer parameters.
+        p_dropout: Dropout probability for positional encoding layer.
+        tie_weight_matrices: Tie weight matrices in input embedding and
+            pre-softmax layers.
+        apply_causal_mask: Apply causal mask in each decoder layer.
 
     Raises:
-        ValueError: If tie_weight_matrices is True and there is a mismatch between the input and
-            output vocabulary sizes.
-
-    Note:
-        To tie weight matrices, we need the input vocabulary size and the output vocabulary size to
-        be equal.
+        ValueError: If tie_weight_matrices is True and there is a mismatch
+            between the input and output vocabulary sizes.
 
     # noqa: DCO060
     """

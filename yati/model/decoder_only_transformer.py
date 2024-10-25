@@ -14,13 +14,11 @@ class DecoderOnlyTransformer(nn.Module):  # pylint: disable=abstract-method
     """Decoder-only transformer.
 
     Args:
-        params (DecoderOnlyTransformerParams): Decoder-only transformer parameters.
+        params: Decoder-only transformer parameters.
 
     Note:
-        Optionally, the input embedding and pre-softmax layers have tied weight matrices.
-
-    Note:
-        All parameters are initialized using Xavier/Glorot initialization, with PyTorch defaults.
+        All parameters are initialized using Xavier/Glorot initialization,
+        with PyTorch defaults.
     """
 
     def __init__(self, params: DecoderOnlyTransformerParams) -> None:  # noqa: DCO010
@@ -57,13 +55,13 @@ class DecoderOnlyTransformer(nn.Module):  # pylint: disable=abstract-method
         """Compute decoder-only transformer output.
 
         Args:
-            x (Tensor): Input tensor.
+            x: Input tensor.
 
         Returns:
             Tensor: Final output of decoder-only transformer.
 
         Note:
-            Softmax is not applied, since cross_entropy_loss() expects logits.
+            Softmax is not applied, since cross_entropy() expects logits.
         """
         x = self._input_embedding(x)  # (b, n, d_model)
         x = self._input_positional_encoding(x)  # (b, n, d_model)
