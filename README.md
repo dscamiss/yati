@@ -4,9 +4,10 @@ This project is an implementation of the (encoder/decoder) transformer
 architecture, as described in "Attention is All You Need" (AIAYN).
 There is also an implementation of the decoder-only architecture.
 
-The main goal of the project (aside from being an interesting learning
-exercise) is to be as faithful as possible to the description in AIAYN.
-Any assumptions are clearly documented.
+Aside from being an interesting learning exercise, the main goal of the project
+is to be as faithful as possible to the description in AIAYN.  This includes the
+choice of terminology and notation/variable names.  Any assumptions are clearly 
+documented.
 
 # Installation 
 
